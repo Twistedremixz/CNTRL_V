@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CNTRL_V Darkroom</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #111 0%, #000 100%);
+      background-size: cover;
+    }
+    .intro {
+      background: #fff;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      font-size: 3em;
+      transition: opacity 1s ease;
+    }
+    .darkroom {
+      background: radial-gradient(circle at center, #1a0000 0%, #000 100%);
+      min-height: 200vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      opacity: 0;
+      transition: opacity 1s ease;
+      filter: contrast(1.1) brightness(0.9);
+    }
+    .wire {
+      display: flex;
+      gap: 40px;
+      position: relative;
+      border-top: 2px solid #555;
+      padding-top: 40px;
+    }
+    .photo {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+      transform-origin: top center;
+      animation: swing 3s ease-in-out infinite alternate;
+      filter: grayscale(20%) brightness(1.1);
+    }
+    .photo:hover {
+      transform: scale(1.05) rotate(-2deg);
+      filter: grayscale(0%);
+    }
+    .clip {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 20px;
+      background: #ccc;
+      border-radius: 2px;
+    }
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      box-shadow: 0 0 80px rgba(255, 0, 0, 0.5);
+    }
+    .lightbox.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @keyframes swing {
+      0% { transform: rotate(-3deg); }
+      100% { transform: rotate(3deg); }
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+      opacity: 0.1;
+    }
+  </style>
+</head>
+<body>
+  <div class="intro" id="intro">CNTRL_V</div>
+  <div class="darkroom" id="darkroom">
+    <div class="wire">
+      <div class="photo"><div class="clip"></div><img src="https://via.placeholder.com/200" alt="Photo 1" /></div>
+      <div class="photo"><div class="clip"></div><img src="https://via.placeholder.com/200" alt="Photo 2" /></div>
+      <div class="photo"><div class="clip"></div><img src="https://via.placeholder.com/200" alt="Photo 3" /></div>
+    </div>
+  </div>
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Zoomed Photo" id="lightbox-img" />
+  </div>
+  <script>
+    const intro = document.getElementById('intro');
+    const darkroom = document.getElementById('darkroom');
+    const photos = document.querySelectorAll('.photo img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    setTimeout(() => {
+      intro.style.opacity = '0';
+      darkroom.style.opacity = '1';
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    }, 2000);
+
+    photos.forEach(photo => {
+      photo.addEventListener('click', () => {
+        lightboxImg.src = photo.src;
+        lightbox.classList.add('show');
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('show');
+    });
+  </script>
+</body>
+</html>
